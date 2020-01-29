@@ -10,6 +10,7 @@ import ActivityList from '../Activity/ActivityList'
 import './HomePage.css'
 
 const HomePage = () => {
+  //TODO rm inline style
   return (
     <div className="out">
       <Hero />
@@ -20,7 +21,6 @@ const HomePage = () => {
           <ActivityList />
         </ContentContainer>
       </PageSection>
-
       <PageSection style={{ background: 'lightgray' }}>
         <ContentContainer>
           <p>PageSection</p>
