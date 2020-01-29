@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import useStoreon from 'storeon/react'
 
-import { Spin, Row, Col, Icon } from 'antd'
+import './style.css'
 
-import {
-  LIKE,
-  UNLIKE,
-  GET_BY_ID,
-  GET_BY_ID_RELOAD_BY_LU
-} from '../../store/activity'
+import { Spin, Icon } from 'antd'
+import { Breadcrumbs, Tags, Button, Curl } from '../UI'
+import { ActivityAuthor, CommunityAvatar, Participants } from './atoms'
+import { InnerPageContentContainer } from '../InnerPageContentContainer'
+
+import { LIKE, UNLIKE, GET_BY_ID, GET_BY_ID_RELOAD_BY_LU } from 'store/activity'
 
 import history from '../../history'
 
@@ -30,7 +30,7 @@ const Activity = ({
   const dispatchEvent = (event, id) => {
     dispatch(event, { id, event: GET_BY_ID_RELOAD_BY_LU })
   }
-  const onHandlerClick = (userId, activity) => {
+  const toggleLike = (userId, activity) => {
     if (!userId) {
       return history.push('/login')
     }
@@ -40,41 +40,59 @@ const Activity = ({
     return dispatchEvent(LIKE, activity.id)
   }
 
-  const { activity, likes } = activityInfo.data
+  const { activity = {}, likes = [] } = activityInfo.data
+  const { tags = [], resource = {}, ts = '' } = activity
+
   return (
-    <div>
-      <Row>
-        <Col span={16}>
-          <h2>
-            {activity.name}{' '}
-            {userId && userId === activity.user.id && (
-              <Icon
-                type="edit"
-                onClick={() => history.push(`/activity/${activity.id}/edit`)}
-                style={{ color: '#1890ff' }}
-              />
-            )}
-          </h2>
-          <div style={{ whiteSpace: 'pre-line' }}>{activity.description}</div>
-          <span
-            style={{ cursor: 'pointer' }}
-            onClick={() => onHandlerClick(userId, activity)}
-          >
-            <Icon
-              type="like-o"
-              style={{ color: activity.likes.isLike ? '#1890ff' : '' }}
-            />{' '}
-            {activity.likes.count}
-          </span>
-        </Col>
-        <Col span={8}>
-          <h3>Участники</h3>
-          {likes.map(item => (
-            <div key={item.id}>{item.user.name}</div>
-          ))}
-        </Col>
-      </Row>
-    </div>
+    <InnerPageContentContainer>
+      <main className="Activity">
+        <div className="Activity-Breadcrumbs">
+          <Breadcrumbs path="#" viewPath="/Программа" />
+        </div>
+        <div className="Activity-Wrapper">
+          <section className="Activity-Content">
+            <h1 className="Activity-Header">
+              {activity.name}
+              {userId && userId === activity.user.id && (
+                <Icon
+                  type="edit"
+                  onClick={() => history.push(`/activity/${activity.id}/edit`)}
+                  style={{ color: '#1890ff' }}
+                />
+              )}
+            </h1>
+            <div className="Activity-Tags">
+              <Tags data={tags} />
+            </div>
+            <p className="Activity-Description">{activity.description}</p>
+            <ActivityAuthor
+              user={resource.user.name}
+              community={resource.community.name}
+              createdAt={ts}
+            />
+          </section>
+          <section className="Activity-Meta">
+            <div className="Activity-Community">
+              <h2 className="Activity-SecondaryHeader">Сообщество</h2>
+              <CommunityAvatar name={resource.community.name} />
+            </div>
+            <div className="Activity-Participants">
+              <h2 className="Activity-SecondaryHeader">Участники</h2>
+              <Participants data={likes} />
+            </div>
+          </section>
+        </div>
+        <Button
+          onClick={() => toggleLike(userId, activity)}
+          text={
+            activity.likes.isLike
+              ? 'Передумал участвовать'
+              : 'Хочу участвовать!'
+          }
+        />
+        <Curl />
+      </main>
+    </InnerPageContentContainer>
   )
 }
 
