@@ -22,7 +22,9 @@ const CommunityList = () => {
       <div className="content">
         <Row style={{ display: 'flex', alignItems: 'baseline' }}>
           <Col span={18}>
-            <Title className="heading heading_level_1">Сообщества</Title>
+            <Title className="heading heading_level_1 heading heading_level_1__title title">
+              Сообщества
+            </Title>
           </Col>
           <Col span={6}>
             {user && (

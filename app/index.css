@@ -1,6 +1,8 @@
 @import '../node_modules/antd/dist/antd.css';
 @import './theme/font_dev.css';
 
+$blue: red;
+
 .hidden {
   display: none;
 }
@@ -13,6 +15,10 @@
   font-size: 24px;
   margin-top: 1rem;
   margin-bottom: 2rem;
+  color: $blue;
+  &__title {
+    color: red;
+  }
 }
 
 .text {
