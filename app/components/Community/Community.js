@@ -37,7 +37,7 @@ const Community = ({
   const { community } = communityInfo.data
   const social = community.social.filter(s => s.icon !== 'global')
   const globalLink = community.social.filter(s => s.icon === 'global')[0]
-
+  console.log('communityInfo', communityInfo)
   return (
     <InnerPageContentContainer>
       <div className="Community-Page">
@@ -73,12 +73,12 @@ const Community = ({
           <Divider className="Community-Separator" type="vertical" />
           <div className="Community-Additional">
             <CommunitySocial data={social} />
-            {community.participants.length !== 0 && (
+            {/*community.participants.length !== 0 && (
               <div className="Community-Participants">
                 <p className="Community-ParticipantsTitle">Участники</p>
                 <Participants data={community.participants} />
               </div>
-            )}
+            )*/}
           </div>
         </div>
         <Curl />
